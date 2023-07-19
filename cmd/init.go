@@ -1,7 +1,8 @@
 package cmd
 
 import (
-	"fmt"
+	"log"
+	"os"
 
 	"github.com/spf13/cobra"
 )
@@ -15,10 +16,21 @@ var initCmd = &cobra.Command{
 	Short: "Initialize repository",
 	Long:  "Initialize repository with default values",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("Initializng repository")
-		fmt.Println("git init")
-		fmt.Println("creating .gitignore")
-		fmt.Println("creating README.md")
-		fmt.Printf("creating LICENSE(%s)\n", License)
+		pwd, err := os.Getwd()
+		if err != nil {
+			log.Fatal(err)
+		}
+		err = InitializeRepository(pwd)
+		if err != nil {
+			log.Fatal(err)
+		}
+		err = CreateReadMe()
+		if err != nil {
+			log.Fatal(err)
+		}
+		err = CreateLicense(License)
+		if err != nil {
+			log.Fatal(err)
+		}
 	},
 }

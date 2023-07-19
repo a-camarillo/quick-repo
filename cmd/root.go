@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -13,7 +14,20 @@ var rootCmd = &cobra.Command{
 	Short:   "Quick git repository setup",
 	Long:    "Bootstrap git repositories with necessary files like readme, gitignore, license, etc",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(ReadMe, License)
+		pwd, err := os.Getwd()
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		err = InitializeRepository(pwd)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		err = CreateReadMe()
+		if err != nil {
+			log.Fatal(err)
+		}
 	},
 }
 
