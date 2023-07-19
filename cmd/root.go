@@ -11,9 +11,9 @@ var rootCmd = &cobra.Command{
 	Use:     "quick-repo [OPTIONS]",
 	Version: "0.0.1",
 	Short:   "Quick git repository setup",
-	Long:    "Bootstrap git repositories with necessary files like readme, gitignore, license, etc.",
+	Long:    "Bootstrap git repositories with necessary files like readme, gitignore, license, etc",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("Hello World")
+		fmt.Println(ReadMe, License)
 	},
 }
 
