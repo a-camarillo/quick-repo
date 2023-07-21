@@ -16,11 +16,11 @@ var initCmd = &cobra.Command{
 	Short: "Initialize repository",
 	Long:  "Initialize repository with default values",
 	Run: func(cmd *cobra.Command, args []string) {
-		pwd, err := os.Getwd()
+		PWD, err := os.Getwd()
 		if err != nil {
 			log.Fatal(err)
 		}
-		err = InitializeRepository(pwd)
+		err = InitializeRepository(PWD)
 		if err != nil {
 			log.Fatal(err)
 		}

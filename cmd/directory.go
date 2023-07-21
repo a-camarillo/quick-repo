@@ -9,7 +9,7 @@ import (
 	"github.com/go-git/go-git/v5"
 )
 
-//go:embed templates/licenses/*
+//go:embed templates/*
 var fs embed.FS
 
 func InitializeRepository(path string) error {
@@ -36,7 +36,7 @@ func CreateLicense(license string) error {
 		if err != nil {
 			return err
 		}
-		err = os.WriteFile("LICENSE.txt", f, 0755)
+		err = os.WriteFile("LICENSE.txt", f, 0655)
 		if err != nil {
 			return err
 		}
@@ -45,7 +45,7 @@ func CreateLicense(license string) error {
 		if err != nil {
 			return err
 		}
-		err = os.WriteFile("LICENSE.txt", f, 0755)
+		err = os.WriteFile("LICENSE.txt", f, 0655)
 		if err != nil {
 			return err
 		}
@@ -54,7 +54,7 @@ func CreateLicense(license string) error {
 		if err != nil {
 			return err
 		}
-		err = os.WriteFile("LICENSE.txt", f, 0755)
+		err = os.WriteFile("LICENSE.txt", f, 0655)
 		if err != nil {
 			return err
 		}
@@ -63,7 +63,7 @@ func CreateLicense(license string) error {
 		if err != nil {
 			return err
 		}
-		err = os.WriteFile("LICENSE.txt", f, 0755)
+		err = os.WriteFile("LICENSE.txt", f, 0655)
 		if err != nil {
 			return err
 		}
@@ -72,7 +72,7 @@ func CreateLicense(license string) error {
 		if err != nil {
 			return err
 		}
-		err = os.WriteFile("LICENSE.txt", f, 0755)
+		err = os.WriteFile("LICENSE.txt", f, 0655)
 		if err != nil {
 			return err
 		}
@@ -81,12 +81,36 @@ func CreateLicense(license string) error {
 		if err != nil {
 			return err
 		}
-		err = os.WriteFile("LICENSE.txt", f, 0755)
+		err = os.WriteFile("LICENSE.txt", f, 0655)
 		if err != nil {
 			return err
 		}
 	default:
-		return nil
+		return fmt.Errorf("%s is not a valid license. Please enter a valid license: MIT, APACHE, APGL, GPL, LPGL, MOZ", license)
+	}
+	return nil
+}
+
+func CreateContributing() error {
+	f, err := fs.ReadFile("templates/CONTRIBUTING.md")
+	if err != nil {
+		return err
+	}
+	err = os.WriteFile("CONTRIBUTING.md", f, 0655)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func CreateCodeOfConduct() error {
+	f, err := fs.ReadFile("templates/CODE_OF_CONDUCT.md")
+	if err != nil {
+		return err
+	}
+	err = os.WriteFile("CODE_OF_CONDUCT.md", f, 0655)
+	if err != nil {
+		return err
 	}
 	return nil
 }
