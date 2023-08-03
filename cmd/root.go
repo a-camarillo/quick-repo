@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/a-camarillo/quick-repo/cmd/initialize"
 	"github.com/spf13/cobra"
 )
 
@@ -16,38 +17,7 @@ var rootCmd = &cobra.Command{
 	Short:   "Quick git repository setup",
 	Long:    "Bootstrap git repositories with necessary files like readme, gitignore, license, etc",
 	Run: func(cmd *cobra.Command, args []string) {
-		PWD, err := os.Getwd()
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		err = CreateLicense(License)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		if ReadMe {
-			err = CreateReadMe()
-			if err != nil {
-				log.Fatal(err)
-			}
-		}
-
-		if CodeOfConduct {
-			err = CreateCodeOfConduct()
-			if err != nil {
-				log.Fatal(err)
-			}
-		}
-
-		if Contributing {
-			err = CreateContributing()
-			if err != nil {
-				log.Fatal(err)
-			}
-		}
-
-		err = InitializeRepository(PWD)
+		err := cmd.Help()
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -55,6 +25,7 @@ var rootCmd = &cobra.Command{
 }
 
 func Execute() {
+	rootCmd.AddCommand(initialize.InitCommand)
 	rootCmd.CompletionOptions.DisableDefaultCmd = true
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)

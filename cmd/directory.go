@@ -114,3 +114,15 @@ func CreateCodeOfConduct() error {
 	}
 	return nil
 }
+
+func CreateGitIgnore() error {
+	f, err := fs.ReadFile("templates/.gitignore")
+	if err != nil {
+		return err
+	}
+	err = os.WriteFile(".gitignore", f, 0655)
+	if err != nil {
+		return err
+	}
+	return nil
+}
