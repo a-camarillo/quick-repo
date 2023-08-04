@@ -1,8 +1,6 @@
 package initialize
 
 import (
-	"fmt"
-
 	"github.com/spf13/cobra"
 )
 
@@ -16,6 +14,6 @@ var InitCommand = &cobra.Command{
 		Short: "Initialize repository.",
 		Long: "Initialize repository with default values",
 		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Println("Hello Init")
+			cmd.Help()
 		},
 }

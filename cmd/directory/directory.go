@@ -1,4 +1,4 @@
-package cmd
+package directory
 
 import (
 	"embed"
@@ -11,6 +11,22 @@ import (
 
 //go:embed templates/*
 var fs embed.FS
+
+// Directory is a type for holding all of the directory information relative
+// to quick-repo flags
+type Directory struct {
+	Repository		string
+	ReadMe			bool	
+	License			string
+	Contribution	bool
+	CodeOfConduct	bool
+	GitIgnore		string
+	ProjectType		string
+}
+
+func NewDirectory() *Directory {
+	return &Directory{}
+}
 
 func InitializeRepository(path string) error {
 	_, err := git.PlainInit(path, false)

@@ -1,0 +1,12 @@
+{
+	"name": "",
+	"version": "0.0.1",
+	"description": "",
+	"main": "index.js",
+	"scripts": {},
+	"author": "",
+	"license": "MIT",
+	"devDependencies": {
+		"typescript": "^5.0.0"
+	}
+}
