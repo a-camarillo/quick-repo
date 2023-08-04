@@ -9,8 +9,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var PWD string
-
 var rootCmd = &cobra.Command{
 	Use:     "quick-repo [OPTIONS]",
 	Version: "0.0.1",

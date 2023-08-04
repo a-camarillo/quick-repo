@@ -15,7 +15,7 @@ var fs embed.FS
 // Directory is a type for holding all of the directory information relative
 // to quick-repo flags
 type Directory struct {
-	Repository		string
+	Path		string
 	ReadMe			bool	
 	License			string
 	Contribution	bool
@@ -28,31 +28,36 @@ func NewDirectory() *Directory {
 	return &Directory{}
 }
 
-func InitializeRepository(path string) error {
-	_, err := git.PlainInit(path, false)
+func (d *Directory) InitializeRepository() error {
+	_, err := git.PlainInit(d.Path, false)
 	if err != nil {
 		return err
 	}
-	fmt.Printf("Initializing Repository at %s/.git/\n", path)
+	fmt.Printf("Initializing Repository at %s/.git/\n", d.Path)
 	return nil
 }
 
-func CreateReadMe() error {
-	_, err := os.Create("README.md")
-	if err != nil {
+func (d *Directory) CreateReadMe() error {
+	if !d.ReadMe {
+		err := fmt.Errorf("specification for creating a README returned false")
 		return err
+	} else {
+		_, err := os.Create("README.md")
+		if err != nil {
+			return err
+		}
+		return nil
 	}
-	return nil
 }
 
-func CreateLicense(license string) error {
-	switch strings.ToLower(license) {
+func (d *Directory) CreateLicense() error {
+	switch strings.ToLower(d.License) {
 	case "mit":
 		f, err := fs.ReadFile("templates/licenses/LICENSE-MIT.txt")
 		if err != nil {
 			return err
 		}
-		err = os.WriteFile("LICENSE.txt", f, 0655)
+		err = os.WriteFile("LICENSE.txt", f, 0644)
 		if err != nil {
 			return err
 		}
@@ -61,7 +66,7 @@ func CreateLicense(license string) error {
 		if err != nil {
 			return err
 		}
-		err = os.WriteFile("LICENSE.txt", f, 0655)
+		err = os.WriteFile("LICENSE.txt", f, 0644)
 		if err != nil {
 			return err
 		}
@@ -70,7 +75,7 @@ func CreateLicense(license string) error {
 		if err != nil {
 			return err
 		}
-		err = os.WriteFile("LICENSE.txt", f, 0655)
+		err = os.WriteFile("LICENSE.txt", f, 0644)
 		if err != nil {
 			return err
 		}
@@ -79,7 +84,7 @@ func CreateLicense(license string) error {
 		if err != nil {
 			return err
 		}
-		err = os.WriteFile("LICENSE.txt", f, 0655)
+		err = os.WriteFile("LICENSE.txt", f, 0644)
 		if err != nil {
 			return err
 		}
@@ -88,7 +93,7 @@ func CreateLicense(license string) error {
 		if err != nil {
 			return err
 		}
-		err = os.WriteFile("LICENSE.txt", f, 0655)
+		err = os.WriteFile("LICENSE.txt", f, 0644)
 		if err != nil {
 			return err
 		}
@@ -97,48 +102,97 @@ func CreateLicense(license string) error {
 		if err != nil {
 			return err
 		}
-		err = os.WriteFile("LICENSE.txt", f, 0655)
+		err = os.WriteFile("LICENSE.txt", f, 0644)
 		if err != nil {
 			return err
 		}
 	default:
-		return fmt.Errorf("%s is not a valid license. Please enter a valid license: MIT, APACHE, APGL, GPL, LPGL, MOZ", license)
+		return fmt.Errorf("%s is not a valid license. Please enter a valid license: MIT, APACHE, APGL, GPL, LPGL, MOZ", d.License)
 	}
 	return nil
 }
 
-func CreateContributing() error {
-	f, err := fs.ReadFile("templates/CONTRIBUTING.md")
-	if err != nil {
+
+func (d *Directory) CreateContributing() error {
+	if !d.Contribution {
+		err := fmt.Errorf("specification for creating a CONTRIBUTION returned false")
 		return err
+	}	else {
+		f, err := fs.ReadFile("templates/CONTRIBUTING.md")
+		if err != nil {
+			return err
+		}
+		err = os.WriteFile("CONTRIBUTING.md", f, 0644)
+		if err != nil {
+			return err
+		}
+		return nil
 	}
-	err = os.WriteFile("CONTRIBUTING.md", f, 0655)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
-func CreateCodeOfConduct() error {
-	f, err := fs.ReadFile("templates/CODE_OF_CONDUCT.md")
-	if err != nil {
+func (d *Directory) CreateCodeOfConduct() error {
+	if !d.CodeOfConduct {
+		err := fmt.Errorf("specification for creating a CODE_OF_CONDUCT returned false")
 		return err
+	} else {
+		f, err := fs.ReadFile("templates/CODE_OF_CONDUCT.md")
+		if err != nil {
+			return err
+		}
+		err = os.WriteFile("CODE_OF_CONDUCT.md", f, 0644)
+		if err != nil {
+			return err
+		}
+		return nil
 	}
-	err = os.WriteFile("CODE_OF_CONDUCT.md", f, 0655)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
-func CreateGitIgnore() error {
-	f, err := fs.ReadFile("templates/.gitignore")
-	if err != nil {
-		return err
+func (d *Directory) CreateGitIgnore() error {
+	switch d.ProjectType {
+		case "go": 
+			f, err := fs.ReadFile("templates/go_templates/gitignore-go")
+			if err != nil {
+				return err
+			}
+			err = os.WriteFile(".gitignore", f, 0644)
+			if err != nil {
+				return err
+			}
+			return nil 	
+		default: 
+			f, err := fs.ReadFile("templates/.gitignore")
+			if err != nil {
+				return err
+			}
+			err = os.WriteFile(".gitignore", f, 0644)
+			if err != nil {
+				return err
+			}
+			return nil
 	}
-	err = os.WriteFile(".gitignore", f, 0655)
-	if err != nil {
-		return err
+}
+
+func (d *Directory) CreateProjectFiles() error {
+	switch d.ProjectType {
+		case "go":
+			main, err := fs.ReadFile("templates/go_templates/main.go")
+			if err != nil {
+				return err
+			}
+			mod, err := fs.ReadFile("templates/go_templates/template_go.mod")
+			if err != nil {
+				return err 
+			}	
+			err = os.WriteFile("main.go", main, 0644)
+			if err != nil {
+				return err
+			}
+			err = os.WriteFile("go.mod", mod, 0644)
+			if err != nil {
+				return err
+			}
+			return nil
+		default:
+			return nil
 	}
-	return nil
 }
