@@ -159,6 +159,16 @@ func (d *Directory) CreateGitIgnore() error {
 				return err
 			}
 			return nil 	
+		case "ts": 
+			f, err := fs.ReadFile("templates/ts_templates/gitignore-ts")
+			if err != nil {
+				return err
+			}
+			err = os.WriteFile(".gitignore", f, 0644)
+			if err != nil {
+				return err
+			}
+			return nil 	
 		default: 
 			f, err := fs.ReadFile("templates/.gitignore")
 			if err != nil {
@@ -188,6 +198,32 @@ func (d *Directory) CreateProjectFiles() error {
 				return err
 			}
 			err = os.WriteFile("go.mod", mod, 0644)
+			if err != nil {
+				return err
+			}
+			return nil
+		case "ts":
+			pkg, err := fs.ReadFile("templates/ts_templates/package.json")
+			if err != nil {
+				return err
+			}
+			idx, err := fs.ReadFile("templates/ts_templates/index.ts")
+			if err != nil {
+				return err
+			}
+			config, err := fs.ReadFile("templates/ts_templates/tsconfig.json")
+			if err != nil {
+				return err 
+			}	
+			err = os.WriteFile("package.json", pkg, 0644)
+			if err != nil {
+				return err
+			}
+			err = os.WriteFile("tsconfig.json", config, 0644)
+			if err != nil {
+				return err
+			}
+			err = os.WriteFile("index.ts", idx, 0644)
 			if err != nil {
 				return err
 			}
