@@ -7,6 +7,7 @@ import (
 func init() {
 	InitCommand.AddCommand(goCommand)
 	InitCommand.AddCommand(tsCommand)
+	InitCommand.AddCommand(pyCommand)
 }
 
 var InitCommand = &cobra.Command{

@@ -13,7 +13,7 @@ var goCommand = &cobra.Command{
 	Use: "go",
 	Short: "Initialize a Go Repository",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("Hello World From Go")
+		fmt.Println("Initializing your Go Repository")
 		dir := directory.NewDirectory()
 		pwd, err := os.Getwd()
 		if err != nil {

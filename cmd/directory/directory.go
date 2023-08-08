@@ -168,6 +168,16 @@ func (d *Directory) CreateGitIgnore() error {
 			if err != nil {
 				return err
 			}
+			return nil
+		case "py": 
+			f, err := fs.ReadFile("templates/py_templates/gitignore-py")
+			if err != nil {
+				return err
+			}
+			err = os.WriteFile(".gitignore", f, 0644)
+			if err != nil {
+				return err
+			}
 			return nil 	
 		default: 
 			f, err := fs.ReadFile("templates/.gitignore")
@@ -224,6 +234,16 @@ func (d *Directory) CreateProjectFiles() error {
 				return err
 			}
 			err = os.WriteFile("index.ts", idx, 0644)
+			if err != nil {
+				return err
+			}
+			return nil
+		case "py":
+			main, err := fs.ReadFile("templates/py_templates/main.py")
+			if err != nil {
+				return err 
+			}
+			err = os.WriteFile("main.py", main, 0644)
 			if err != nil {
 				return err
 			}

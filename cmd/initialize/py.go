@@ -9,11 +9,11 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var tsCommand = &cobra.Command{
-	Use: "ts",
-	Short: "Initialize a Typescript Repository",
+var pyCommand = &cobra.Command{
+	Use: "py",
+	Short: "Initialize a Python Repository",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("Initializing your Typescript Repository")
+		fmt.Println("Initializing your Python Repository")
 		dir := directory.NewDirectory()
 		pwd, err := os.Getwd()
 
@@ -23,7 +23,7 @@ var tsCommand = &cobra.Command{
 
 		dir.Path = pwd
 		dir.License = License
-		dir.ProjectType = "ts"
+		dir.ProjectType = "py"
 
 		dir.CreateLicense()
 
